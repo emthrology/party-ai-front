@@ -12,6 +12,8 @@ export default defineNuxtConfig({
     '@nuxt/scripts'
   ],
 
+  css: ['~/assets/css/main.css'],
+
   colorMode: {
     preference: 'system', // 'system', 'light', 'dark' 중 선택
     fallback: 'light', // 시스템 테마를 감지할 수 없을 때 기본값
