@@ -1,7 +1,14 @@
 <template>
   <aside
-    class="fixed left-0 top-16 bottom-0 w-18 bg-gray-100 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
+    class="fixed left-0 top-0 bottom-0 w-18 bg-gray-100 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto z-50">
     <nav class="py-4 px-2 space-y-2">
+      <!-- 로고 -->
+      <div class="flex justify-center mb-4">
+        <NuxtLink to="/" class="flex items-center justify-center">
+          <img src="@/assets/images/party_logo.png" alt="로고" class="w-10 h-10">
+        </NuxtLink>
+      </div>
+
       <!-- 네비게이션 메뉴 -->
       <NuxtLink to="/articles"
         class="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
