@@ -1,10 +1,5 @@
 import { decodeToken, verifyToken } from '~/utils/jwt'
-
-interface User {
-  id: string
-  email: string
-  name: string
-}
+import type { User, LoginResponse, UserResponse, LoginResult } from '~/types'
 
 export const useAuth = () => {
   const token = useCookie<string | null>('auth_token', {
@@ -31,30 +26,30 @@ export const useAuth = () => {
   // 로그인
   const login = async (email: string, password: string) => {
     try {
-      const response = await $fetch<{
-        success: boolean
-        token: string
-        user: User
-      }>('/api/auth/login', {
+      const response = await $fetch<LoginResponse>('/api/auth/login', {
         method: 'POST',
         body: {
           email,
           password
         }
       })
-
-      if (response.success && response.token) {
-        setToken(response.token)
-        return { success: true, user: response.user }
+      console.log('response from login', response)
+      const { success, data } = response
+      if (success && data) {
+        setToken(data.token)
+        return { success, user: data.user } as LoginResult
       }
 
-      return { success: false, error: '로그인에 실패했습니다.' }
-    } catch (error: unknown) {
-      const err = error as { data?: { error?: string } }
       return {
         success: false,
-        error: err?.data?.error || '로그인에 실패했습니다.'
-      }
+        error: response.error?.message || '로그인에 실패했습니다.'
+      } as LoginResult
+    } catch (error: unknown) {
+      const err = error as { data?: { error?: { message?: string } } }
+      return {
+        success: false,
+        error: err?.data?.error?.message || '로그인에 실패했습니다.'
+      } as LoginResult
     }
   }
 
@@ -65,13 +60,20 @@ export const useAuth = () => {
     }
 
     try {
-      const userData = await $fetch<User>('/api/auth/me', {
+      const response = await $fetch<UserResponse>('/api/auth/me', {
         headers: {
           Authorization: `Bearer ${token.value}`
         }
       })
-      user.value = userData
-      return userData
+      
+      if (response.success && response.data) {
+        user.value = response.data
+        return response.data
+      }
+      
+      // 토큰이 유효하지 않으면 삭제
+      logout()
+      return null
     } catch {
       // 토큰이 유효하지 않으면 삭제
       logout()

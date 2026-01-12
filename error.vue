@@ -20,12 +20,11 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  error: {
-    type: Object,
-    default: () => ({})
-  }
-})
+import type { ErrorProps } from '~/types'
+
+const props = defineProps<{
+  error: ErrorProps
+}>()
 
 const getErrorMessage = () => {
   if (props.error.statusCode === 404) {

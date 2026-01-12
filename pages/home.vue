@@ -1,19 +1,29 @@
 <template>
   <div class="text-center">
-    <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl">
-      환영합니다!
-    </h1>
-    <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
-      {{ user?.name || user?.email }}님, 로그인에 성공했습니다.
-    </p>
-    <!-- 아티클로 버튼 -->
-    <div class="mt-8 space-x-4">
-      <UButton to="/articles" variant="solid" color="secondary">
-        아티클로 이동
-      </UButton>
-      <UButton to="/mypage" variant="subtle" color="secondary">
-        마이페이지로 이동
-      </UButton>
+    <div class="h-[calc(100vh-120px)] w-full flex flex-col items-center justify-center">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">
+        무엇을 도와드릴까요?
+      </h1>
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
+        원하시는 소식 및 이슈와 관련된 내용을 입력해 주세요
+      </p>
+      <!-- 질문창과 버튼 -->
+      <div class="mt-4 w-full max-w-2xl mx-auto space-y-8">
+        <LLMQuestion placeholder="원하시는 키워드를 입력해 주세요" />
+        <!-- 아티클로 버튼 -->
+        <div class="flex gap-2">
+          <UButton to="/articles" class="flex-1 py-3 justify-center items-center rounded-lg" variant="outline"
+            color="neutral">
+            <UIcon name="heroicons-solid:exclamation-circle" size="24" />
+            <span class="text-lg font-bold">이슈</span>
+          </UButton>
+          <UButton to="/commentary" class="flex-1 py-3 justify-center items-center rounded-lg" variant="outline"
+            color="neutral">
+            <UIcon name="heroicons-solid:chat-bubble-left-ellipsis" size="24" />
+            <span class="text-lg font-bold">논평</span>
+          </UButton>
+        </div>
+      </div>
     </div>
   </div>
 </template>

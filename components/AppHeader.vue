@@ -1,10 +1,11 @@
 <template>
-  <header class="fixed top-0 left-0 right-0 h-16 bg-gray-200 dark:bg-gray-700 border-b border-gray-700 z-40">
-    <div class="h-full flex items-center justify-between px-4">
+  <header
+    class="fixed top-0 left-0 right-0 h-16 bg-gray-50 dark:bg-gray-700 border-b border-[0.5px] border-gray-200 dark:border-gray-700 z-40">
+    <div class="h-full flex items-center justify-between px-10">
       <!-- 좌측 영역: 메뉴 이름 (로고는 사이드바로 이동) -->
       <div class="flex items-center ml-18">
         <!-- 현재 메뉴 이름 -->
-        <span class="text-gray-900 dark:text-white text-sm">{{ currentMenuName }}</span>
+        <span class="text-gray-900 dark:text-white text-2xl">{{ currentMenuName }}</span>
       </div>
 
       <!-- 우측 메뉴: 다크모드 토글 -->
@@ -28,7 +29,7 @@ const menuMap: Record<string, string> = {
   '/commentary': '논평',
   '/poll': '폴',
   '/mypage': '마이페이지',
-  '/home': '홈',
+  '/home': '',
 }
 
 // 현재 활성화된 메뉴 이름

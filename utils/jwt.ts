@@ -1,12 +1,7 @@
 // 간단한 JWT 생성 및 검증 유틸리티
 // 실제 프로덕션에서는 서버에서만 JWT를 생성해야 합니다
 
-interface JWTPayload {
-  userId: string
-  email: string
-  exp: number
-  iat: number
-}
+import type { JWTPayload } from '~/types'
 
 const SECRET = 'your-secret-key-change-in-production'
 
