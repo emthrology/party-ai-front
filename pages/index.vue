@@ -13,7 +13,7 @@
         <div class="rounded-md space-y-4">
           <div>
             <label for="email" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">아이디</label>
-            <input id="email" v-model="email" name="email" type="email" autocomplete="email" required
+            <input id="email" v-model="email" name="email" type="input" required
               :class="['appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm', emailFocused ? 'bg-white dark:bg-gray-700' : 'bg-gray-100 dark:bg-gray-700']"
               placeholder="아이디 입력해 주세요" @focus="emailFocused = true" @blur="emailFocused = false" />
           </div>
@@ -78,7 +78,6 @@ const handleLogin = async () => {
 
   try {
     const result = await login(email.value, password.value)
-    console.log('result from handleLogin', result)
     if (result.success) {
       // 로그인 성공 시 리다이렉트 URL이 있으면 그곳으로, 없으면 홈으로 이동
       const redirectPath = route.query.redirect || '/home'

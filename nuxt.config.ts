@@ -12,6 +12,29 @@ export default defineNuxtConfig({
     '@nuxt/scripts'
   ],
 
+  icon: {
+    clientBundle: {
+      scan: true
+    },
+    provider: 'iconify'
+  },
+
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.NUXT_PUBLIC_API_BASE
+    }
+  },
+
+  nitro: {
+    routeRules: {
+      '/api/**': { 
+        proxy: process.env.NUXT_PUBLIC_API_BASE 
+          ? `${process.env.NUXT_PUBLIC_API_BASE}/api/**` 
+          : 'http://127.0.0.1:8080/api/**'
+      }
+    }
+  },
+
   css: ['~/assets/css/main.css'],
 
   colorMode: {

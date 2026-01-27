@@ -18,9 +18,9 @@
 
         <!-- 검색 버튼 -->
         <div class="flex justify-end">
-          <UButton type="submit" variant="solid" color="neutral" :disabled="!formState.question.trim()" size="sm"
-            class="rounded-lg font-medium whitespace-nowrap px-8 py-2">
-            검색하기
+          <UButton type="submit" :variant="formState.question.trim() ? 'solid' : 'outline'" color="neutral"
+            :disabled="!formState.question.trim()" size="sm" class="rounded-lg font-medium whitespace-nowrap px-8 py-2">
+            {{ buttonText }}
           </UButton>
         </div>
       </div>
@@ -33,10 +33,15 @@
 
 const props = defineProps<{
   placeholder: string
+  buttonText: string
 }>()
 const formState = ref({
   question: ''
 })
+
+const emit = defineEmits<{
+  submit: [question: string | undefined]
+}>()
 
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
 const textareaHeight = ref(0)
@@ -60,7 +65,8 @@ const adjustTextareaHeight = () => {
 }
 
 const handleSubmit = () => {
-  console.log(formState.value)
+  emit('submit', formState.value.question)
+  formState.value.question = ''
 }
 
 // 컴포넌트 마운트 시 초기 높이 설정

@@ -33,7 +33,6 @@ export const useAuth = () => {
           password
         }
       })
-      console.log('response from login', response)
       const { success, data } = response
       if (success && data) {
         setToken(data.token)

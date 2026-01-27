@@ -11,7 +11,7 @@ const mockUsers = [
   },
   {
     id: '2',
-    email: 'admin@example.com',
+    email: 'admin',
     password: 'admin123',
     name: '관리자'
   }
@@ -185,6 +185,26 @@ A19·20블록과 맞닿아 있는 'e편한세상 영종하늘도시' 전용 84�
   }
 ]
 
+export const mockCommentaries = [
+  {
+    id: 4901,
+    title: "조선일보 멤버십 회원은 아래 주소를 클릭하시면 갖고 계신 포인트를 활용해 보다 저렴하게 구매할 수 있습니다.",
+    content: `[사진 설명: 한동훈 전 국민의힘 대표가 지난달 3일 서울 여의도 국회도서관 인근 쪽문에서 12·3 비상계엄 1주년 기자회견을 하고 있다. 뉴스1]
+국민의힘 중앙윤리위원회가 '당원게시판 의혹'과 관련해 한동훈 전 대표에 대해 최고 수위 징계인 '제명'을 의결하면서 당내 갈등이 확산하고 있다.
+14일 새벽 기습적으로 내려진 이번 결정에 친한(한동훈)계와 당내 소장파 그룹은 반발과 우려를 표하며 집단 대응에 나섰다.
+국민의힘 중앙윤리위원회는 이날 공고문을 통해 한 전 대표가 당헌·당규 및 윤리규칙을 위반해 당 발전에 지장을 초래하고 민심을 이탈케 했다며 제명 처분을 발표했다.
+이에 한 전 대표는 SNS를 통해 "국민과 함께 민주주의를 지키겠다"며 반발했다. 친한계 의원들은 긴급 회동을 갖고 공동 대응책 마련에 나서기로 했다.
+수도권 3선인 송석준 의원은 14일 자신의 페이스북에 "대통령에 대한 구형은 재판을 통해 최종 판결이 이루어지겠지만 한동훈 전 대표 제명 처분은 최종 결정으로 가히 당내 민주주의의 사망이라 아니할 수 없을 것"이라며 "절대 좌시하지 않겠다"고 했다.
+친한계 정성국 의원은 페이스북에 "국민의힘은 당 대표 한 명의 사유물이 아니다"라며 "당을 살리기 위해, 보수의 가치를 지키기 위해 끝까지 싸우겠다"고 했다.
+박정훈 의원도 "윤 어게인 세력을 앞세워 정당사에 남을 최악의 비민주적 결정을 내린 장동혁 대표는 최고위에서 이 의결을 뒤집어야 한다"고 했다.
+우재준 국민의힘청년최고위원은 "당무감사위원회에서 조작된 부분을 제외하고 보면 객관적으로 징계할 만한 사유는 존재하지 않는다"며 "결국 (윤석열 전 대통령) 탄핵 찬성에 대한 보복"이라고 했다
+김종혁 전 최고위원은 페이스북에 "동트기 직전이 가장 어두운 법"이라며 "그래도 새벽은 온다. 파도 없는 인생도 없다"고 밝혔다.
+신지호 전 의원도 페이스북에 "닭 모가지를 비틀어도 새벽은 온다"고 했다.
+당내 소장파 그룹인 '대안과 미래' 역시 장동혁 대표를 향해 윤리위 결정에 대한 재고를 강력히 촉구할 예정이다. 이들은 이날 오전에 모여 징계안에 대해 논의한다.
+한 전 대표에 대한 제명 처분은 향후 최고위원회의 의결을 거쳐 최종 확정될 예정이다.`,
+  }
+]
+
 
 export const handlers = [
   // 로그인 API
@@ -336,6 +356,64 @@ export const handlers = [
       success: true,
       data: {
         commentary
+      }
+    })
+  }),
+
+  // 코멘터리 업데이트 스트리밍 API (SSE)
+  http.post('/api/v1/commentaries/:id/update', async ({ params, request }) => {
+    const id = Number(params.id)
+    const body = await request.json() as { title: string }
+    // const originalCommentary = _commentaryData.find(item => item.id === id)
+    
+    // if (!originalCommentary) {
+    //   return HttpResponse.json(
+    //     { success: false, error: {
+    //       message: '코멘터리를 찾을 수 없습니다.',
+    //       code: 404
+    //     } },
+    //     { status: 404 }
+    //   )
+    // }
+
+    // 3초 딜레이 후 새 코멘터리 생성
+    const newCommentary = {
+      id: Date.now(), // 임시 ID
+      summaryId: id, // 원본 코멘터리 ID를 summaryId로 사용
+      type: 'COMMENTARY',
+      title: body.title,
+      text: mockCommentaries.find(item => item.id === 4901)?.content || '',
+      usedCrawledIds: JSON.stringify([id]), // 원본 코멘터리 ID를 배열로
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+
+    // ReadableStream을 사용하여 SSE 스타일 스트리밍 응답 생성
+    const stream = new ReadableStream({
+      async start(controller) {
+        const encoder = new TextEncoder()
+        
+        // 3초 딜레이
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        
+        // SSE 형식으로 데이터 전송
+        const data = JSON.stringify({
+          success: true,
+          data: {
+            commentary: newCommentary
+          }
+        })
+        
+        controller.enqueue(encoder.encode(`data: ${data}\n\n`))
+        controller.close()
+      }
+    })
+
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive'
       }
     })
   })

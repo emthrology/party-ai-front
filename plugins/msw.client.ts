@@ -11,7 +11,9 @@ export default defineNuxtPlugin(async () => {
       }
     })
 
+    // MSW가 활성화되었는지 확인
     console.log('✅ MSW (Mock Service Worker)가 활성화되었습니다.')
+    console.log('📋 등록된 핸들러 수:', worker.listHandlers().length)
   }
 })
 

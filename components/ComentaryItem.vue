@@ -8,7 +8,7 @@
       <div class="flex space-x-2">
         <span class="text-sm text-gray-700">{{ timeAgo }}</span>
         <span class="text-sm text-gray-700">|</span>
-        <span class="text-sm text-gray-700">{{ commentary.source_count }}개의 출처</span>
+        <span class="text-sm text-gray-700">{{ sourceCount }}개의 출처</span>
         <span class="text-sm text-gray-700">|</span>
       </div>
     </div>
@@ -17,27 +17,31 @@
 
 <script setup lang="ts">
 import type { Commentary } from '~/types'
+import { timeAgo as getTimeAgo } from '~/utils/timeAgo'
 
 const props = defineProps<{
   commentary: Commentary
 }>()
 
-//article.content 글자 수 제한
+// text 글자 수 제한
 const limitedContent = computed(() => {
-  return props.commentary.content.slice(0, 100) + '...'
+  return props.commentary.text.slice(0, 100) + '...'
 })
 
-//article.original_write_at으로부터 몇시간 전인지 계산 (24시간 후로는 며칠 전인지 계산)
-const timeAgo = computed(() => {
-  const now = new Date()
-  const originalDate = new Date(props.commentary.original_write_at)
-  const diffTime = Math.abs(now.getTime() - originalDate.getTime())
-  const diffHours = Math.ceil(diffTime / (1000 * 60 * 60))
-  if (diffHours < 24) {
-    return `${diffHours}시간 전`
-  } else {
-    return `${Math.ceil(diffHours / 24)}일 전`
+// usedCrawledIds를 파싱하여 출처 개수 계산
+const sourceCount = computed(() => {
+  if (!props.commentary.usedCrawledIds) return 0
+  try {
+    const ids = JSON.parse(props.commentary.usedCrawledIds)
+    return Array.isArray(ids) ? ids.length : 0
+  } catch {
+    return 0
   }
+})
+
+// createdAt으로부터 몇시간 전인지 계산
+const timeAgo = computed(() => {
+  return getTimeAgo(props.commentary.createdAt)
 })
 
 </script>

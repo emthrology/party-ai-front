@@ -10,7 +10,7 @@
 
       <!-- 우측 메뉴: 다크모드 토글 -->
       <div class="flex items-center">
-        <UButton :icon="isDark ? 'i-heroicons-sun' : 'i-heroicons-moon'" variant="ghost"
+        <UButton :icon="isDark ? 'heroicons-solid:sun' : 'heroicons-solid:moon'" variant="ghost"
           class="text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
           aria-label="Toggle color mode" @click="toggleDark" />
       </div>
@@ -25,7 +25,7 @@ const isDark = computed(() => colorMode.value === 'dark')
 
 // 현재 라우트에 따른 메뉴 이름 매핑
 const menuMap: Record<string, string> = {
-  '/articles': '기사',
+  '/articles': '이슈',
   '/commentary': '논평',
   '/poll': '폴',
   '/mypage': '마이페이지',
@@ -41,7 +41,7 @@ const currentMenuName = computed(() => {
     }
   }
   // 기본값
-  return '기사'
+  return '이슈'
 })
 
 const toggleDark = () => {

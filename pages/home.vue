@@ -9,7 +9,7 @@
       </p>
       <!-- 질문창과 버튼 -->
       <div class="mt-4 w-full max-w-2xl mx-auto space-y-8">
-        <LLMQuestion placeholder="원하시는 키워드를 입력해 주세요" />
+        <LLMQuestion placeholder="원하시는 키워드를 입력해 주세요" buttonText="검색하기" />
         <!-- 아티클로 버튼 -->
         <div class="flex gap-2">
           <UButton to="/articles" class="flex-1 py-3 justify-center items-center rounded-lg" variant="outline"
@@ -40,6 +40,6 @@ if (!isAuthenticated.value) {
 // 페이지 메타 정보
 definePageMeta({
   layout: 'default',
-  middleware: 'auth'
+  // middleware: 'auth'
 })
 </script>
