@@ -19,7 +19,7 @@ export type { Story } from './news'
 export type { Article, ArticleImage, ArticlesResponse, ArticleResponse } from './article'
 
 // 코멘터리 관련
-export type { Commentary, CommentariesResponse, CommentaryResponse } from './commentary'
+export type { Commentary, CommentariesResponse, CommentaryResponse, Revision, RevisionsResponse } from './commentary'
 
 // JWT 관련
 export type { JWTPayload } from './jwt'

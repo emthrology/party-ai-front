@@ -1,4 +1,4 @@
-import type { CommentariesResponse, CommentaryResponse, AISessionResponse, AdoptCommentaryResponseData } from '~/types/commentary'
+import type { CommentariesResponse, CommentaryResponse, AISessionResponse, AdoptCommentaryResponseData, RevisionsResponse } from '~/types/commentary'
 
 export const useCommentary = () => {
   const fetchCommentaries = async (options?: {
@@ -31,6 +31,17 @@ export const useCommentary = () => {
     })
     return response
   }
+  // 수정 이력(리비전) 목록 - v1 프리픽스 없이 노출되는 엔드포인트
+  const fetchRevisions = async (commentaryId: number): Promise<RevisionsResponse> => {
+    const response = await $fetch<RevisionsResponse>(`/api/commentaries/${commentaryId}/revisions`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    return response
+  }
+
   //ai 세션 생성
   const createAISession = async (
     commentaryId: number,
@@ -167,6 +178,7 @@ export const useCommentary = () => {
   return {
     fetchCommentaries,
     fetchCommentary,
+    fetchRevisions,
     streamMessage,
     createAISession,
     adoptCommentary

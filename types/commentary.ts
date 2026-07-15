@@ -1,4 +1,3 @@
-import type { ApiResponse } from './api'
 import type { Pageable } from './article'
 
 export interface Commentary {
@@ -39,39 +38,28 @@ export interface PaginatedCommentaries {
   empty: boolean
 }
 
-/**
- * {
-  "revision": {
-    "id": 0,
-    "commentaryId": 0,
-    "revisionNo": 0,
-    "chatSessionId": 0,
-    "chatMessageId": 0,
-    "title": "string",
-    "text": "string",
-    "isCurrent": true,
-    "createdAt": "2026-01-27T11:12:24.381Z"
-  },
-  "message": "string"
+export interface Revision {
+  id: number
+  commentaryId: number
+  revisionNo: number
+  chatSessionId: number | null
+  chatMessageId: number | null
+  title: string
+  text: string
+  isCurrent: boolean
+  createdAt: string
 }
- */
 
 export interface AdoptCommentaryResponseData {
-  revision: {
-    id: number
-    commentaryId: number
-    revisionNo: number
-    chatSessionId: number
-    chatMessageId: number
-    title: string
-    text: string
-    isCurrent: boolean
-    createdAt: string
-  },
+  revision: Revision
   message: string
 }
-export type CommentariesResponse = ApiResponse<PaginatedCommentaries>
-export type CommentaryResponse = ApiResponse<{ commentary: Commentary }>
-export type AISessionResponse = ApiResponse<AISession>
-export type MessageResponse = ApiResponse<Message>
-export type AdoptCommentaryResponse = ApiResponse<AdoptCommentaryResponse>
+
+// 논평/채팅 API(백엔드)는 ApiResponse 래핑 없이 DTO를 그대로 반환한다.
+// ApiResponse 래핑은 MSW로 목킹한 인증 API에만 적용된다.
+export type CommentariesResponse = PaginatedCommentaries
+export type CommentaryResponse = Commentary
+export type AISessionResponse = AISession
+export type RevisionsResponse = Revision[]
+export type AdoptCommentaryResponse = AdoptCommentaryResponseData
+export type MessageResponse = Message

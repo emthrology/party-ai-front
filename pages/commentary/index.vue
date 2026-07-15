@@ -82,7 +82,9 @@ const loadCommentaries = async () => {
       totalPages.value = response.totalPages
       totalElements.value = response.totalElements
     } else {
-      console.error('Failed to fetch commentaries:', response.error)
+      commentaries.value = []
+      totalPages.value = 0
+      totalElements.value = 0
     }
   } catch (error) {
     console.error('Failed to fetch commentaries:', error)
